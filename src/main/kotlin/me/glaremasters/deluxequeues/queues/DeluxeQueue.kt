@@ -83,23 +83,24 @@ class DeluxeQueue(
         val titleTop = settingsManager.getProperty(ConfigOptions.TITLE_HEADER)
         val titleBottom = settingsManager.getProperty(ConfigOptions.TITLE_FOOTER)
 
-        fun applyPlaceholders(message: String): String {
+        fun applyPlaceholdersAndColor(message: String): String {
             return message
                     .replace("{pos}", (getQueuePos(player) + 1).toString())
                     .replace("{total}", queue.size.toString())
+                    .color()
         }
 
         when (notifyMethod.toLowerCase()) {
             "actionbar" -> {
-                player.player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent(applyPlaceholders(actionbar).color()))
+                player.player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent(applyPlaceholdersAndColor(actionbar)))
             }
             "text" -> {
-                player.player.sendMessage(TextComponent(applyPlaceholders(message).color()))
+                player.player.sendMessage(TextComponent(applyPlaceholdersAndColor(message)))
             }
             "title" -> {
                 val title = deluxeQueues.proxy.createTitle()
                 title.title(TextComponent(titleTop.color()))
-                val bottom = applyPlaceholders(titleBottom).color()
+                val bottom = applyPlaceholdersAndColor(titleBottom)
                 title.subTitle(TextComponent(bottom))
                 player.player.sendTitle(title)
             }
