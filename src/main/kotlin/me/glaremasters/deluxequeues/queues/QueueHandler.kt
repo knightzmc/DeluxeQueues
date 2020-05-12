@@ -5,7 +5,6 @@ import me.glaremasters.deluxequeues.DeluxeQueues
 import me.glaremasters.deluxequeues.configuration.sections.ConfigOptions
 import net.md_5.bungee.api.config.ServerInfo
 import net.md_5.bungee.api.connection.ProxiedPlayer
-import java.util.function.Consumer
 
 /**
  * Created by Glare
@@ -79,7 +78,7 @@ class QueueHandler(val settingsManager: SettingsManager, val deluxeQueues: Delux
      * Enable all the queues on the server
      */
     fun enableQueues() {
-        settingsManager.getProperty(ConfigOptions.QUEUE_SERVERS).forEach(Consumer { s: String ->
+        settingsManager.getProperty(ConfigOptions.QUEUE_SERVERS).forEach { s: String ->
             try {
                 val split = s.split(";".toRegex())
                 val queue = DeluxeQueue(deluxeQueues, deluxeQueues.proxy.getServerInfo(split[0]), split[1].toInt(), split[2].toInt())
@@ -87,7 +86,7 @@ class QueueHandler(val settingsManager: SettingsManager, val deluxeQueues: Delux
             } catch (ex: Exception) {
                 deluxeQueues.logger.warning("It seems like one of your servers was configured invalidly in the config.")
             }
-        })
+        }
     }
 
     fun getQueues(): Set<DeluxeQueue> {
