@@ -40,7 +40,6 @@ class ConnectionListener(deluxeQueues: DeluxeQueues) : Listener {
         val p = queue.getFromProxy(player) ?: return
         if (p.isReadyToMove) {
             event.isCancelled = false
-            queue.removePlayer(p)
             return
         }
         if (queue.canAddPlayer()) {
