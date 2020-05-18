@@ -37,8 +37,8 @@ class ConnectionListener(deluxeQueues: DeluxeQueues) : Listener {
         }
         // Get the queue
         val queue = queueHandler.getQueue(server) ?: return
-        val p = queue.getFromProxy(player)
-        if (p != null && p.isReadyToMove) {
+        val p = queue.getFromProxy(player) ?: return
+        if (p.isReadyToMove) {
             event.isCancelled = false
             queue.removePlayer(p)
             return

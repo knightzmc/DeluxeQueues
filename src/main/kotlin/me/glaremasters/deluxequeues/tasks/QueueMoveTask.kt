@@ -27,7 +27,7 @@ class QueueMoveTask(
             return
         }
         // Get the player next in line
-        val player = queue.queue.firstOrNull() ?: return
+        val player = queue.queue.pollFirst() ?: return
         // Move the player to that server
         player.player.connect(server)
         player.isReadyToMove = true

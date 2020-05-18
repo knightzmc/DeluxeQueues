@@ -26,11 +26,18 @@ class DeluxeQueue(
     val queue: Deque<QueuePlayer> = LinkedList()
 
     private val settingsManager: SettingsManager = deluxeQueues.settingsHandler.settingsManager
-    private val delayLength: Int = settingsManager.getProperty(ConfigOptions.DELAY_LENGTH)
-    private val notifyMethod: String = settingsManager.getProperty(ConfigOptions.INFORM_METHOD)
+
+    private var delayLength: Int = -1 //Effectively lateinit
+    private lateinit var notifyMethod: String
 
     init {
+        loadConfiguration()
         deluxeQueues.proxy.scheduler.schedule(deluxeQueues, QueueMoveTask(this, server), 0, delayLength.toLong(), TimeUnit.SECONDS)
+    }
+
+    fun loadConfiguration() {
+        delayLength = settingsManager.getProperty(ConfigOptions.DELAY_LENGTH)
+        notifyMethod = settingsManager.getProperty(ConfigOptions.INFORM_METHOD)
     }
 
     /**
@@ -108,10 +115,12 @@ class DeluxeQueue(
     }
 
     override fun toString(): String {
-        return """
-        |DeluxeQueue(deluxeQueues=$deluxeQueues, queue=${queue}, 
-        |server=$server, delayLength=$delayLength, playersRequired=$playersRequired, 
-        |maxSlots=$maxSlots, settingsManager=$settingsManager, notifyMethod=$notifyMethod)
-        |""".trimMargin()
+        return "DeluxeQueue(deluxeQueues=$deluxeQueues, queue=${queue}," +
+                "server=$server," +
+                " delayLength=$delayLength," +
+                " playersRequired=$playersRequired," +
+                " \nmaxSlots=$maxSlots," +
+                " settingsManager=$settingsManager," +
+                " notifyMethod=$notifyMethod)"
     }
 }
